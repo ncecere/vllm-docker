@@ -45,12 +45,13 @@ jobs:
           images: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
             ${{ env.IMAGE_NAME }}
-      - name: Build and push Docker image to GitHub Container Registry
+      - name: Build and push multi-arch Docker image to GitHub Container Registry
         uses: docker/build-push-action@v6
         with:
           context: .
           file: Dockerfile.cpu
           push: ${{ github.event_name == 'push' }}
+          platforms: linux/amd64,linux/arm64
           tags: ghcr.io/${{ github.repository_owner }}/vllm:latest
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
